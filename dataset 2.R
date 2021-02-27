@@ -20,7 +20,7 @@ dataset2 <- Origional_dataset_2
 
 
 #removing deer that were shot (S), or died of calving issue as moth (G), accident (A) or query (Q)
-dataset2 <- filter(dataset2, !(DeathType %in% c("A", "G", "S", "Q")))
+dataset2 <-  dataset2 %>% filter(!(DeathType %in% c("A", "G", "S", "Q")))
 
 
 
@@ -41,7 +41,6 @@ dataset2 <- dataset2 %>% separate(Deathdate, sep = "-", into = c("DeathYear", "D
 dataset2$deathdeeryear <- dataset2$`DeathYear`
 dataset2$deathdeeryear[(dataset2$`DeathMonth` <5) & !is.na(dataset2$DeathMonth)] <- 
   dataset2$deathdeeryear[(dataset2$`DeathMonth` <5) & !is.na(dataset2$DeathMonth)]-1
-dataset2$deathdeeryear
 
 deathage2 <- (dataset2$deathdeeryear-dataset2$BirthYear) %>% as.double()  
 dataset2$deathage <- deathage2
@@ -50,7 +49,12 @@ dataset2$deathage <- deathage2
 
 #create new column with survived (1) or died (0)
 dataset2$survived <- dataset2$DeathType %>% is.na() %>% as.numeric()
-is.na(dataset2$DeathType)
+#is.na(dataset2$DeathType) -- this returns all NA death types  as True 
+
+
+
+#removing deer that died but don't have a death year 
+dataset2 <- dataset2 %>% filter((survived == 0 & !is.na(deathage)) | (survived==1))
 
 
 
