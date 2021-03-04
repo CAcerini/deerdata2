@@ -12,16 +12,12 @@ Origional_dataset_2 <- read_excel("Origional dataset 2.xlsx")
 View(Origional_dataset_2)
 
 
-
-
-
 #new copy of dataset2 for you to add to 
 dataset2 <- Origional_dataset_2
 
 
 #removing deer that were shot (S), or died of calving issue as moth (G), accident (A) or query (Q)
 dataset2 <-  dataset2 %>% filter(!(DeathType %in% c("A", "G", "S", "Q")))
-
 
 
 #change sex from numbers to male and female 
@@ -57,7 +53,6 @@ dataset2$survived <- dataset2$DeathType %>% is.na() %>% as.numeric()
 dataset2 <- dataset2 %>% filter((survived == 0 & !is.na(deathage)) | (survived==1))
 
 
-
 #create new column with first winter survived (1) or died (0)
 firstwinterdeath <- (dataset2$deathage == 0) %>% as.numeric()   #this creates a vector 'firstwinterdeath' , listing  deer that die in first winter  as the number 1 and deer that deer that don't as 0 
 
@@ -75,6 +70,18 @@ dataset2 <- dataset2%>% filter(BirthYear == `deeryear`)
 dataset2 <- dataset2 %>% mutate(MassPerPellet= SampleMass/PelletCount) %>% drop_na(MassPerPellet)
 
 
+#removing that September sample  
+dataset2 <- dataset2 %>% filter(!(`Sample month` == 9))
+
+
+#changing sample month to factor and reordering levels to fit with deer year  
+dataset2$`Sample month` <- factor(dataset2$`Sample month` , levels=c("8", "11", "4"))
+
+
+#changing birth year and sample deer year to ordered factors 
+dataset2$BirthYear <- dataset2$BirthYear %>% factor(order=TRUE, levels=c("2015", "2016", "2017", "2018", "2019"))
+dataset2$deeryear <- dataset2$deeryear %>% factor(order=TRUE, levels=c("2015", "2016", "2017", "2018", "2019"))
+
 
 #New data sets with November or August samples (taken from same year as born) 
 Ndata2 <- dataset2 %>% filter(`Sample month` == 11)
@@ -82,6 +89,9 @@ Ndata2 <- dataset2 %>% filter(`Sample month` == 11)
 Adata2 <- dataset2 %>% filter(`Sample month` == 8)
 
 
+#new data set that looks at just august and Nov samples 
+
+data2AN <- dataset2 %>% filter(`Sample month` == (8) | `Sample month` == (11))
 
 
 
@@ -90,3 +100,8 @@ Adata2 <- dataset2 %>% filter(`Sample month` == 8)
 
 
 
+
+
+#know how, but dont do this unless you have good reason!!!
+#replacing outlier mass per pellet values with NA 
+#Ndata2MOR <- Ndata2 %>% mutate(MassPerPellet = ifelse(MassPerPellet > 1.5, NA, MassPerPellet))
