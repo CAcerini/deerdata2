@@ -112,19 +112,6 @@ data2AN <- dataset2 %>% filter(`Sample month` == (8) | `Sample month` == (11))
 
 
 
-# data2AN repeated measures removed randomly ------------------------------
-#data2AN %>% distinct(Code) %>% count() #191 unique individuals, but 343 samples
-
-data2AN.2 <- data2AN %>% group_by(Code) %>% sample_n(1)
-
-#data2AN.2 %>% group_by(`Sample month`) %>% count(survivedfirstwinter)
-#data2AN.2 %>% group_by(survivedfirstwinter) %>% count() #57 die, 134 survive 
-
-
-
-
-
-
 # dataset22W --------------------------------------------------------------
 
 #create new column with second winter survived (1) or died (0)
@@ -162,19 +149,6 @@ dataset22W$deeryear <- dataset22W$deeryear %>% factor()
 
 
 
-# dataset22W.2 - removing repeated samples --------------------------------
-
-#this is a trial to make sure we dont have repeated measures of calves, but can have samples from different months in the dataset
-#should gt 134 samples now. 
-#we have 17 deer that die in their second winter, and 117 that survive  
-
-dataset22W.2 <- dataset22W %>% group_by(Code) %>% sample_n(1)
-
-#dataset22W.2 %>% group_by(`Sample month`) %>% count(survivedsecondwinter)
-#dataset22W.2 %>% group_by(survivedsecondwinter) %>% count()
-
-
-
 # Nov, Aug & April subsets of 2W survival data ----------------------------
 
 
@@ -208,17 +182,45 @@ APdata22W %>% group_by(survivedsecondwinter) %>% count() #13 deer have died, 80 
 
 
 
-# other -------------------------------------------------------------------
 
+# data2AN repeated measures removed randomly ------------------------------
+#data2AN %>% distinct(Code) %>% count() #191 unique individuals, but 343 samples
+
+data2AN.2 <- data2AN %>% group_by(Code) %>% sample_n(1)
+
+#data2AN.2 %>% group_by(`Sample month`) %>% count(survivedfirstwinter)
+#data2AN.2 %>% group_by(survivedfirstwinter) %>% count() #57 die, 134 survive 
+
+
+
+
+
+
+
+# dataset22W.2 - removing repeated samples --------------------------------
+
+#this is a trial to make sure we dont have repeated measures of calves, but can have samples from different months in the dataset
+#should gt 134 samples now. 
+#we have 17 deer that die in their second winter, and 117 that survive  
+
+dataset22W.2 <- dataset22W %>% group_by(Code) %>% sample_n(1)
+
+#dataset22W.2 %>% group_by(`Sample month`) %>% count(survivedsecondwinter)
+#dataset22W.2 %>% group_by(survivedsecondwinter) %>% count()
+
+
+
+
+# Other----------------------------------------------------
 
 #know how, but dont do this unless you have good reason!!!
 #replacing outlier mass per pellet values with NA 
 data2MOR <- data2AN %>% mutate(MassPerPellet = ifelse(MassPerPellet > 1.5, NA, MassPerPellet))
 
-# dataset2AA - for all juveniles - No ----------------------------------------------------
 
+#dataset2AA - for all juveniles - No
 
-#and another dataset to look at pellet mass and strongyle counts 
+#add another dataset to look at pellet mass and strongyle counts 
 dataset2AA <- Origional_dataset_2
 
 #change sex from numbers to male and female 

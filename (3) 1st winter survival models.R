@@ -52,6 +52,7 @@ tab_model(modelminA)# - an sjplot output, shows ' Odds ratios'
 
 write.csv(summary(maxmodel1A)$coefficients, file="maxmodelA.csv")
 
+write.csv(summary(modelminA)$coefficients, file="survivalAmin.csv")
 
 
 
