@@ -1,6 +1,3 @@
-#clear objects 
-rm(list=ls())
-
 library(readxl); library(tidyverse)
 
 
@@ -126,16 +123,16 @@ dataset22W$survivedsecondwinter <- 1-secondwinterdeath #this creates column in d
 
 dataset22W <- dataset22W %>% filter(!(BirthYear== 2019)) #removing deer born in 2019 bc we dont know if they have survived/died second winter(winter of 2021, deer yr 2020)
 
-#to be revised... trying to filter for samples taken in the april,aug,nov before their second winter. so april samples will be as calves. and aug and nov as yearlings  
+#to be revised...  filter for samples taken in the april,aug,nov before their second winter. so april samples will be as calves. and aug and nov as yearlings  
 dataset22W <- dataset22W%>% 
   filter((sampleage == 0 & `Sample month`==4) | (sampleage==1 & `Sample month`== 11) | (sampleage==1 & `Sample month`== 8))
 
 
-#changing sample month to factor and reordering levels to fit with deer year  
+#changing sample month to factor and   deer year  order 
 dataset22W$`Sample month` <- factor(dataset22W$`Sample month` , levels=c("8", "11", "4"))
 
 
-#changing birth year and sample deer year to ordered factors 
+#changing birth year and sample deer year to factors 
 dataset22W$BirthYear <- dataset22W$BirthYear %>% factor()
 dataset22W$deeryear <- dataset22W$deeryear %>% factor()
 
@@ -158,7 +155,7 @@ Ndata22W<- dataset22W %>% filter(`Sample month` == 11)
 
 Ndata22W<- Ndata22W %>%  group_by(Code) %>% sample_n(1) #randomly removing repeated sample 
 
-Ndata22W %>% group_by(survivedsecondwinter) %>% count() #14 deer have died, 77 survived  
+#Ndata22W %>% group_by(survivedsecondwinter) %>% count() #14 deer have died, 77 survived  
 
 #august subset of second winter 
 
@@ -166,14 +163,14 @@ Adata22W<- dataset22W %>% filter(`Sample month` == 8)
 
 Adata22W<- Adata22W %>%  group_by(Code) %>% sample_n(1) 
 
-Adata22W %>% group_by(survivedsecondwinter) %>% count() #13 deer have died, 79 survived  
+#Adata22W %>% group_by(survivedsecondwinter) %>% count() #13 deer have died, 79 survived  
 
 #april subset of second winter
 
 APdata22W <- dataset22W %>% filter(`Sample month` == 4)
 APdata22W <- APdata22W %>% group_by(Code) %>% sample_n(1)
 
-APdata22W %>% group_by(survivedsecondwinter) %>% count() #13 deer have died, 80 survived  
+#APdata22W %>% group_by(survivedsecondwinter) %>% count() #13 deer have died, 80 survived  
 
 
 
@@ -183,8 +180,17 @@ APdata22W %>% group_by(survivedsecondwinter) %>% count() #13 deer have died, 80 
 
 
 
-# data2AN repeated measures removed randomly ------------------------------
-#data2AN %>% distinct(Code) %>% count() #191 unique individuals, but 343 samples
+
+
+
+### other --
+
+
+##
+
+
+# data2AN.2 rrm ------------------------------
+#data2AN %>% distinct(Code) %>% count() 
 
 data2AN.2 <- data2AN %>% group_by(Code) %>% sample_n(1)
 
@@ -196,8 +202,7 @@ data2AN.2 <- data2AN %>% group_by(Code) %>% sample_n(1)
 
 
 
-
-# dataset22W.2 - removing repeated samples --------------------------------
+# dataset22W.2 - rrm -------------------------------
 
 #this is a trial to make sure we dont have repeated measures of calves, but can have samples from different months in the dataset
 #should gt 134 samples now. 
